@@ -1,0 +1,480 @@
+
+mysql> create database DB;
+Query OK, 1 row affected (0.53 sec)
+
+mysql> use DB;
+Database changed
+
+-- Creating Table Shoes
+
+mysql> create table shoes(id char(10) primary key,    brand char(10) NOT NULL,    Price decimal(8,2) NOT NULL,    Des Varchar(750) Null    );
+Query OK, 0 rows affected (1.16 sec)
+
+-- Inserting value in shoes table
+
+mysql> insert into shoes values ("5","gucci","120.00","null");
+       insert into shoes values("2","armani","200","null");
+       insert into shoes values("4","jockey","330","null");
+Query OK, 1 row affected (0.25 sec)
+
+Query OK, 1 row affected (0.10 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into shoes values("1","gucci","120","null");
+Query OK, 1 row affected (0.18 sec)
+
+-- displaying table with data
+
+mysql> select * from shoes;
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 1  | gucci  | 120.00 | null |
+| 2  | armani | 200.00 | null |
+| 4  | jockey | 330.00 | null |
+| 5  | gucci  | 120.00 | null |
++----+--------+--------+------+
+
+
+-- IN, BETWEEN opeerators
+mysql> select * from shoes where id IN (5,2);
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 2  | armani | 200.00 | null |
+| 5  | gucci  | 120.00 | null |
++----+--------+--------+------+
+2 rows in set (0.02 sec)
+
+mysql> select * from shoes where id between 2 and 5;
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 2  | armani | 200.00 | null |
+| 4  | jockey | 330.00 | null |
+| 5  | gucci  | 120.00 | null |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+
+-- AND, OR, NOT logical operator
+
+mysql> select * from shoes where id = 2 or id = 4;
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 2  | armani | 200.00 | null |
+| 4  | jockey | 330.00 | null |
++----+--------+--------+------+
+2 rows in set (0.00 sec)
+
+
+mysql> select * from shoes where id = 2 and brand="armani";
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 2  | armani | 200.00 | null |
++----+--------+--------+------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from shoes where not id=5 and not id = 1;
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 2  | armani | 200.00 | null |
+| 4  | jockey | 330.00 | null |
++----+--------+--------+------+
+2 rows in set (0.00 sec)
+
+
+
+-- Aggregate Function ... SUM, AVERAGE, COUNT, MIN, MAX 
+
+mysql> select AVG(Price) "average" from shoes;
++------------+
+| average    |
++------------+
+| 192.500000 |
++------------+
+1 row in set (0.06 sec)
+
+mysql> select COUNT(*) as count_row from shoes;
++-----------+
+| count_row |
++-----------+
+|         4 |
++-----------+
+1 row in set (0.07 sec)
+
+mysql> select Max(Price) "max_" , min(Price)  "min_" from shoes;
++--------+--------+
+| max_   | min_   |
++--------+--------+
+| 330.00 | 120.00 |
++--------+--------+
+1 row in set (0.06 sec)
+
+mysql> select SUM(Price) as total from shoes;
++--------+
+| total  |
++--------+
+| 770.00 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select SUM(Price * id) as total from shoes;
++-------+
+| total |
++-------+
+|  2440 |
++-------+
+1 row in set (0.05 sec)
+
+
+
+-- DISTINCT Clause
+mysql>  select sum(distinct price) as total_with_no_duplicate from shoes;
++-------------------------+
+| total_with_no_duplicate |
++-------------------------+
+|                  650.00 |
++-------------------------+
+1 row in set (0.00 sec)
+
+
+-- WILDCARD 
+
+
+mysql> select * from shoes where brand like 'G%';
++----+-------+--------+------+
+| id | brand | Price  | Des  |
++----+-------+--------+------+
+| 1  | gucci | 120.00 | null |
+| 5  | gucci | 120.00 | null |
++----+-------+--------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from shoes where brand like '%i';
++----+--------+--------+------+
+| id | brand  | Price  | Des  |
++----+--------+--------+------+
+| 1  | gucci  | 120.00 | null |
+| 2  | armani | 200.00 | null |
+| 5  | gucci  | 120.00 | null |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from shoes where brand like 'G_c%';
++----+-------+--------+------+
+| id | brand | Price  | Des  |
++----+-------+--------+------+
+| 1  | gucci | 120.00 | null |
+| 5  | gucci | 120.00 | null |
++----+-------+--------+------+
+2 rows in set (0.00 sec)
+
+
+
+-- Creating new table Employees for GROUP BY, ORDER BY and HAVING Clause
+
+mysql> create table Employees(id int, name varchar(50), job_role varchar(100), salary int);
+Query OK, 0 rows affected (1.08 sec)
+
+mysql> insert into Employees values(1, "Abhi", "Data Scienctist", "50000" );
+       insert into Employees values(2, "Vaibhav", "Developer", "40000" );
+       insert into Employees values(3, "Joy", "Database admin", "30000" );
+       insert into Employees values(4, "Danny", "Data Engineer", "50000" );
+       insert into Employees values(5, "vishal", "Data Engineer", "300000" );
+       insert into Employees values(6, "Gopal", "Data Scienctist", "60000" );
+       insert into Employees values(7, "Abhi", "Data Scienctist", "60000");
+Query OK, 1 row affected (0.12 sec)
+
+Query OK, 1 row affected (0.14 sec)
+
+Query OK, 1 row affected (0.11 sec)
+
+Query OK, 1 row affected (0.07 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from Employees;
++------+---------+-----------------+--------+
+| id   | name    | job_role        | salary |
++------+---------+-----------------+--------+
+|    1 | Abhi    | Data Scienctist |  50000 |
+|    2 | Vaibhav | Developer       |  40000 |
+|    3 | Joy     | Database admin  |  30000 |
+|    4 | Danny   | Data Engineer   |  50000 |
+|    5 | vishal  | Data Engineer   | 300000 |
+|    6 | Gopal   | Data Scienctist |  60000 |
+|    7 | Abhi    | Data Scienctist |  60000 |
++------+---------+-----------------+--------+
+7 rows in set (0.00 sec)
+
+
+-- Using GROUP BY, ORDER BY AND HAVING CLAUSE with Aggregate function
+
+mysql> select * from employees order by salary desc;
++------+---------+-----------------+--------+
+| id   | name    | job_role        | salary |
++------+---------+-----------------+--------+
+|    5 | vishal  | Data Engineer   | 300000 |
+|    6 | Gopal   | Data Scienctist |  60000 |
+|    7 | Abhi    | Data Scienctist |  60000 |
+|    1 | Abhi    | Data Scienctist |  50000 |
+|    4 | Danny   | Data Engineer   |  50000 |
+|    2 | Vaibhav | Developer       |  40000 |
+|    3 | Joy     | Database admin  |  30000 |
++------+---------+-----------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT name, Sum(SALARY) as total_salary FROM employees GROUP BY NAME;
++---------+--------------+
+| name    | total_salary |
++---------+--------------+
+| Abhi    |       110000 |
+| Vaibhav |        40000 |
+| Joy     |        30000 |
+| Danny   |        50000 |
+| vishal  |       300000 |
+| Gopal   |        60000 |
++---------+--------------+
+6 rows in set (0.05 sec)
+
+mysql> select count(name) as "name_count" , salary, name from Employees group by name order by salary;
++------------+--------+---------+
+| name_count | salary | name    |
++------------+--------+---------+
+|          1 |  30000 | Joy     |
+|          1 |  40000 | Vaibhav |
+|          2 |  50000 | Abhi    |
+|          1 |  50000 | Danny   |
+|          1 |  60000 | Gopal   |
+|          1 | 300000 | vishal  |
++------------+--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select name, sum(salary) as "total_salary" from employees group by name having total_salary >= 50000;
++--------+--------------+
+| name   | total_salary |
++--------+--------------+
+| Abhi   |       110000 |
+| Danny  |        50000 |
+| vishal |       300000 |
+| Gopal  |        60000 |
++--------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> select name, count(*) as total_count from employees group by name having total_count > 1 ;
++------+-------------+
+| name | total_count |
++------+-------------+
+| Abhi |           2 |
++------+-------------+
+1 row in set (0.00 sec)
+
+
+-- Creating two Tables for JOIN's and SubQueries
+
+--first table
+mysql> create table customers(c_id int, name varchar(100), city varchar(100),    country varchar(100), price int    );
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> insert into customers values(1, "abhi", "ratlam", "India",100);
+       insert into customers values(2, "abhishek", "indore", "India",200);
+       insert into customers values(3, "abhimanyu", "ujjain", "India",200);
+       insert into customers values(4, "vishal", "aajamgarh", "India",400);
+       insert into customers values(5, "mana", "ratlam", "India",600);
+       insert into customers values(6, "choksey", "jabalpur", "India",500);
+       insert into customers values(7, "pathak", "xyz_city", "USA",300);
+       insert into customers values(8, "abhinav", "abc_city", "Germany",2000);
+Query OK, 1 row affected (0.16 sec)
+
+Query OK, 1 row affected (0.13 sec)
+
+Query OK, 1 row affected (0.10 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.09 sec)
+
+Query OK, 1 row affected (0.22 sec)
+
+Query OK, 1 row affected (0.17 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from customers;
++------+-----------+-----------+---------+-------+
+| c_id | name      | city      | country | price |
++------+-----------+-----------+---------+-------+
+|    1 | abhi      | ratlam    | India   |   100 |
+|    2 | abhishek  | indore    | India   |   200 |
+|    3 | abhimanyu | ujjain    | India   |   200 |
+|    4 | vishal    | aajamgarh | India   |   400 |
+|    5 | mana      | ratlam    | India   |   600 |
+|    6 | choksey   | jabalpur  | India   |   500 |
+|    7 | pathak    | xyz_city  | USA     |   300 |
+|    8 | abhinav   | abc_city  | Germany |  2000 |
++------+-----------+-----------+---------+-------+
+8 rows in set (0.00 sec)
+
+
+-- Second Table Suppliers
+
+mysql> create table suppliers(id int, name varchar(100), city varchar(100),    country varchar(100), keemat int    );
+Query OK, 0 rows affected (0.49 sec)
+
+mysql> insert into suppliers values(10, "abhinav", "abc_city", "Germany",2000);
+       insert into suppliers values(20, "mana_sup", "ratlam", "India",200);
+       insert into suppliers values(30, "abhi_sup", "ratlam", "india",3000);
+       insert into suppliers values(40, "vislu_sup", "aajamgarh", "india",500);
+       insert into suppliers values(50, "abhishek_sup", "abc_city", "Germany",700);
+       insert into suppliers values(60, "choksey_sup", "jabalpur", "india",600                    );
+Query OK, 1 row affected (0.10 sec)
+
+Query OK, 1 row affected (0.12 sec)
+
+Query OK, 1 row affected (0.11 sec)
+
+Query OK, 1 row affected (0.08 sec)
+
+Query OK, 1 row affected (0.10 sec)
+
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from suppliers;
++------+--------------+-----------+---------+--------+
+| id   | name         | city      | country | keemat |
++------+--------------+-----------+---------+--------+
+|   10 | abhinav      | abc_city  | Germany |   2000 |
+|   20 | mana_sup     | ratlam    | India   |    200 |
+|   30 | abhi_sup     | ratlam    | india   |   3000 |
+|   40 | vislu_sup    | aajamgarh | india   |    500 |
+|   50 | abhishek_sup | abc_city  | Germany |    700 |
+|   60 | choksey_sup  | jabalpur  | india   |    600 |
++------+--------------+-----------+---------+--------+
+6 rows in set (0.00 sec)
+
+
+-- UNION join
+mysql> select * from customers where country="india"union select * from suppliers where country="india" order by city;
++------+-------------+-----------+---------+-------+
+| c_id | name        | city      | country | price |
++------+-------------+-----------+---------+-------+
+|    4 | vishal      | aajamgarh | India   |   400 |
+|   40 | vislu_sup   | aajamgarh | india   |   500 |
+|    2 | abhishek    | indore    | India   |   200 |
+|    6 | choksey     | jabalpur  | India   |   500 |
+|   60 | choksey_sup | jabalpur  | india   |   600 |
+|    1 | abhi        | ratlam    | India   |   100 |
+|    5 | mana        | ratlam    | India   |   600 |
+|   20 | mana_sup    | ratlam    | India   |   200 |
+|   30 | abhi_sup    | ratlam    | india   |  3000 |
+|    3 | abhimanyu   | ujjain    | India   |   200 |
++------+-------------+-----------+---------+-------+
+10 rows in set (0.02 sec)
+
+--INNER JOIN
+mysql> select c_id, c.name, s.country from customers c inner join suppliers s on c.city = s.city;
++------+---------+---------+
+| c_id | name    | country |
++------+---------+---------+
+|    1 | abhi    | India   |
+|    1 | abhi    | india   |
+|    4 | vishal  | india   |
+|    5 | mana    | India   |
+|    5 | mana    | india   |
+|    6 | choksey | india   |
+|    8 | abhinav | Germany |
+|    8 | abhinav | Germany |
++------+---------+---------+
+8 rows in set (0.00 sec)
+
+--LEFT join
+
+mysql> select c.c_id, c.name, s.keemat from customers c left join suppliers s on c.price = s.keemat;
++------+-----------+--------+
+| c_id | name      | keemat |
++------+-----------+--------+
+|    1 | abhi      |   NULL |
+|    2 | abhishek  |    200 |
+|    3 | abhimanyu |    200 |
+|    4 | vishal    |   NULL |
+|    5 | mana      |    600 |
+|    6 | choksey   |    500 |
+|    7 | pathak    |   NULL |
+|    8 | abhinav   |   2000 |
++------+-----------+--------+
+8 rows in set (0.00 sec)
+
+
+-- RIGHT JOIN
+
+mysql> select c.c_id, c.name, s.keemat from customers c right join suppliers s on c.price = s.keemat;
++------+-----------+--------+
+| c_id | name      | keemat |
++------+-----------+--------+
+|    8 | abhinav   |   2000 |
+|    2 | abhishek  |    200 |
+|    3 | abhimanyu |    200 |
+| NULL | NULL      |   3000 |
+|    6 | choksey   |    500 |
+| NULL | NULL      |    700 |
+|    5 | mana      |    600 |
++------+-----------+--------+
+7 rows in set (0.00 sec)
+
+
+-- SUBQUERIES
+
+mysql> select c.c_id, c.name from customers c where c.country in (select s.country from suppliers s where s.keemat > 2000);
++------+-----------+
+| c_id | name      |
++------+-----------+
+|    1 | abhi      |
+|    2 | abhishek  |
+|    3 | abhimanyu |
+|    4 | vishal    |
+|    5 | mana      |
+|    6 | choksey   |
++------+-----------+
+6 rows in set (0.00 sec)
+
+
+--UPDATE
+
+mysql> UPDATE customers SET city = "vadodara" where name = "vishal";
+Query OK, 1 row affected (0.15 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customers;
++------+-----------+----------+---------+-------+
+| c_id | name      | city     | country | price |
++------+-----------+----------+---------+-------+
+|    1 | abhi      | ratlam   | India   |   100 |
+|    2 | abhishek  | indore   | India   |   200 |
+|    3 | abhimanyu | ujjain   | India   |   200 |
+|    4 | vishal    | vadodara | India   |   400 |
+|    5 | mana      | ratlam   | India   |   600 |
+|    6 | choksey   | jabalpur | India   |   500 |
+|    7 | pathak    | xyz_city | USA     |   300 |
+|    8 | abhinav   | abc_city | Germany |  2000 |
++------+-----------+----------+---------+-------+
+8 rows in set (0.06 sec)
+
+
+-- To DROP the table
+
+mysql> drop table shoes;
+Query OK, 0 rows affected (1.42 sec)
+
+
+
+
